@@ -36,3 +36,10 @@ export const BASES = {
 };
 
 export const BASE_INICIAL = 'osm';
+
+// Dados: arquivos estáticos de outro repositório, por isso URL absoluta (DEC-F13, DEC-002).
+export const DADOS = {
+  urlBase: 'https://ceturb-niad.github.io/transcol-itinerarios-dados/',
+  manifesto: 'manifest.json',
+  geojson: 'itinerarios.geojson',
+};
