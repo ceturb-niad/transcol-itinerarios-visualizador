@@ -1,0 +1,21 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+/* O mapa cobre toda a janela (DEC-F11). */
+#mapa {
+  position: fixed;
+  inset: 0;
+}
+
+/* Área para os controles sobrepostos; só os filhos recebem cliques. */
+#controles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+#controles > * {
+  pointer-events: auto;
+}
