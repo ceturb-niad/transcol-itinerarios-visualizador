@@ -2,8 +2,8 @@
   "name": "transcol-itinerarios-visualizador",
   "private": true,
   "scripts": {
-    "test": "node --test",
-    "test:watch": "node --test --watch",
+    "test": "node --test --test-reporter=spec",
+    "test:watch": "node --test --watch --test-reporter=spec",
     "start": "python3 -m http.server 8000",
     "verificar-dados": "node v1/scripts/verificar-dados.mjs"
   }
