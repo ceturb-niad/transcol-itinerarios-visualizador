@@ -2,6 +2,11 @@
 // Grupo, subgrupo e linha só expandem e recolhem; tudo abre recolhido. A identidade fica em
 // atributos data-, nunca em `id` nem em seletor (DEC-F22). Textos entram por textContent.
 
+// Nó do DOM por objeto do modelo (par, grupo, subgrupo): referências, sem texto concatenado.
+function novoRegistro() {
+  return { grupos: new Map(), subgrupos: new Map(), pares: new Map() };
+}
+
 function listaDe(...itens) {
   const ul = document.createElement('ul');
   ul.className = 'arvore-lista';
@@ -44,21 +49,37 @@ function criarFeature(feature) {
   return li;
 }
 
-function criarLinha(par) {
+function criarLinha(par, registro) {
   const dados = { grupo: par.grupo, linha: par.linha };
   if (par.subgrupo !== null) dados.subgrupo = par.subgrupo;
-  return criarNo('linha', par.linha, dados, par.features.map(criarFeature));
+  const no = criarNo('linha', par.linha, dados, par.features.map(criarFeature));
+  registro.pares.set(par, no);
+  return no;
 }
 
-// Devolve o elemento raiz da árvore, já inserido em `contenedor`.
+// Alterna a expansão de um nó (botão + lista de filhos).
+function definirExpandido(no, aberto) {
+  const botao = no.querySelector(':scope > .arvore-botao');
+  botao.setAttribute('aria-expanded', String(aberto));
+  botao.nextElementSibling.hidden = !aberto;
+}
+
+// Devolve { raiz, aplicarFiltro }. A árvore já fica inserida em `contenedor`.
 export function criarArvore(contenedor, modelo) {
+  const registro = novoRegistro();
   const raiz = listaDe(...modelo.grupos.map((g) => {
     const filhos = [
-      ...g.subgrupos.map((s) =>
-        criarNo('subgrupo', s.nome, { grupo: g.nome, subgrupo: s.nome }, s.linhas.map(criarLinha))),
-      ...g.linhas.map(criarLinha),
+      ...g.subgrupos.map((s) => {
+        const no = criarNo('subgrupo', s.nome, { grupo: g.nome, subgrupo: s.nome },
+          s.linhas.map((par) => criarLinha(par, registro)));
+        registro.subgrupos.set(s, no);
+        return no;
+      }),
+      ...g.linhas.map((par) => criarLinha(par, registro)),
     ];
-    return criarNo('grupo', g.nome, { grupo: g.nome }, filhos);
+    const no = criarNo('grupo', g.nome, { grupo: g.nome }, filhos);
+    registro.grupos.set(g, no);
+    return no;
   }));
   raiz.classList.add('arvore');
   raiz.setAttribute('role', 'tree');
@@ -73,6 +94,49 @@ export function criarArvore(contenedor, modelo) {
     botao.nextElementSibling.hidden = aberto;
   });
 
+  // Estado manual de expansão guardado ao entrar no modo busca e devolvido ao sair (DEC-F23).
+  // Expansões feitas durante a busca valem só até apagar o texto.
+  let instantaneo = null;
+  const todosNos = () => [...raiz.querySelectorAll('.arvore-no')];
+
+  function sairDaBusca() {
+    if (!instantaneo) return;
+    for (const no of todosNos()) no.hidden = false;
+    for (const [no, aberto] of instantaneo) definirExpandido(no, aberto);
+    instantaneo = null;
+  }
+
+  // `achados`: Set de pares, ou null para remover o filtro. Devolve a quantidade de pares visíveis
+  // (null sem filtro). Só mexe na visibilidade da árvore; a seleção não é tocada.
+  function aplicarFiltro(achados) {
+    if (achados === null) {
+      sairDaBusca();
+      return null;
+    }
+    if (!instantaneo) {
+      instantaneo = new Map(todosNos().map((no) => [no, no.querySelector(':scope > .arvore-botao').getAttribute('aria-expanded') === 'true']));
+    }
+    const visivel = (pares) => pares.some((par) => achados.has(par));
+    for (const g of modelo.grupos) {
+      const noGrupo = registro.grupos.get(g);
+      const comResultado = visivel([...g.linhas, ...g.subgrupos.flatMap((s) => s.linhas)]);
+      noGrupo.hidden = !comResultado;
+      if (comResultado) definirExpandido(noGrupo, true);
+      for (const s of g.subgrupos) {
+        const noSub = registro.subgrupos.get(s);
+        const subComResultado = visivel(s.linhas);
+        noSub.hidden = !subComResultado;
+        if (subComResultado) definirExpandido(noSub, true);
+      }
+    }
+    for (const [par, no] of registro.pares) {
+      no.hidden = !achados.has(par);
+      // Expandido até o nível da linha; as features ficam recolhidas.
+      if (achados.has(par)) definirExpandido(no, false);
+    }
+    return achados.size;
+  }
+
   contenedor.append(raiz);
-  return raiz;
+  return { raiz, aplicarFiltro };
 }

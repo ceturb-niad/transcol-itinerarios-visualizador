@@ -4,6 +4,7 @@
 export const TEXTOS = {
   falhaManifesto:
     'Não foi possível obter as datas de atualização dos dados. Os itinerários foram carregados, mas não é possível confirmar quão recentes são.',
+  semResultadoBusca: 'Nenhuma linha encontrada',
   datasIndisponiveis: 'Datas de atualização indisponíveis',
   falhaGeojson:
     'Não foi possível carregar os itinerários. Verifique a conexão e recarregue a página; a rede também pode estar bloqueando o acesso aos dados. Se o problema persistir, avise o administrador do visualizador.',
