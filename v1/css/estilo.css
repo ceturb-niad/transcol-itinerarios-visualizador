@@ -74,10 +74,41 @@ html, body {
   display: none;
 }
 
-.busca-campo {
+/* Cabeçalho fixo da caixa lateral: ações globais e campo de busca. */
+.cabecalho {
   position: sticky;
   top: 0;
   z-index: 1;
+  background: #fff;
+}
+
+.acoes {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px 0;
+}
+
+.acoes button {
+  flex: 1;
+  padding: 5px 8px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: #f4f6f9;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.acoes button:hover {
+  background: #e6edf7;
+}
+
+.acoes button:focus-visible {
+  outline: 2px solid #1a5fb4;
+  outline-offset: 1px;
+}
+
+.busca-campo {
   box-sizing: border-box;
   width: 100%;
   padding: 8px 10px;

@@ -70,3 +70,18 @@ test('filtro do mapa: vazio não casa nada; com chaves usa literal', () => {
   assert.deepEqual(filtroPorChaves([]), ['==', ['get', 'chave'], '']);
   assert.deepEqual(filtroPorChaves(new Set(['a b (c)'])), ['in', ['get', 'chave'], ['literal', ['a b (c)']]]);
 });
+
+test('ligar tudo e limpar (C7)', () => {
+  const s = criarSelecao();
+  let chamadas = 0;
+  s.aoMudar(() => { chamadas += 1; });
+  const todas = [...modelo.features.keys()];
+  assert.equal(s.ligar(modelo.features.keys()).length, todas.length);
+  assert.equal(s.estadoLinha(vv), 'todas');
+  assert.equal(s.estadoLinha(vd), 'todas');
+  assert.equal(s.ligar(todas).length, 0, 'idempotente');
+  assert.equal(chamadas, 1);
+  s.limpar();
+  assert.equal(s.estadoLinha(vv), 'nenhuma');
+  assert.equal(chamadas, 2);
+});
