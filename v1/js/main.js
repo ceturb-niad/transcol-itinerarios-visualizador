@@ -11,6 +11,7 @@ import { anexarCores } from './cores.js';
 import { criarArvore } from './arvore-ui.js';
 import { criarSelecao } from './selecao.js';
 import { adicionarItinerarios } from './mapa-itinerarios.js';
+import { criarAcoes } from './acoes-ui.js';
 import { criarBusca } from './busca-ui.js';
 
 console.info(`MapLibre GL JS ${maplibregl.getVersion()}`);
@@ -49,5 +50,11 @@ if (dados.geojson) {
   const selecao = criarSelecao();
   const aplicarSelecao = adicionarItinerarios(mapa, dados.geojson);
   selecao.aoMudar(aplicarSelecao);
-  criarBusca(caixaLateral, modelo, criarArvore(caixaLateral, modelo, selecao));
+  // Modo de medição (4.3 T2): só com ?medir na URL; não afeta o uso normal.
+  if (new URLSearchParams(location.search).has('medir')) {
+    const { prepararMedicao } = await import('./medicao.js');
+    prepararMedicao(mapa, dados.geojson, aplicarSelecao);
+  }
+  const campoBusca = criarBusca(caixaLateral, modelo, criarArvore(caixaLateral, modelo, selecao));
+  criarAcoes(caixaLateral, modelo, selecao, campoBusca);
 }

@@ -2,8 +2,8 @@
 // colorida), filtradas por `chave` (DEC-F07, DEC-F21). Sem camada de texto (DEC-F12).
 import { ITINERARIOS } from './config.js';
 
-const FONTE = 'itinerarios';
-const CAMADAS = ['itinerarios-contorno', 'itinerarios-linha'];
+export const FONTE = 'itinerarios';
+export const CAMADAS = ['itinerarios-contorno', 'itinerarios-linha'];
 
 // Filtro que seleciona só as chaves dadas; sem chave, não casa nada (mapa vazio).
 export function filtroPorChaves(chaves) {
