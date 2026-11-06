@@ -159,6 +159,27 @@ html, body {
   padding: 3px 10px 3px 24px;
 }
 
+.arvore-caixa {
+  flex: none;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Caixa da linha sobre o início do botão, que ganha recuo para ela. */
+.arvore-linha {
+  position: relative;
+}
+
+.arvore-linha > .arvore-caixa {
+  position: absolute;
+  left: 10px;
+  top: 9px;
+}
+
+.arvore-linha > .arvore-botao {
+  padding-left: 32px;
+}
+
 .arvore-amostra {
   flex: none;
   width: 12px;

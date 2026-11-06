@@ -9,6 +9,8 @@ import { falhaTiles, mensagensDeFalhas } from './mensagens.js';
 import { construirModelo } from './arvore.js';
 import { anexarCores } from './cores.js';
 import { criarArvore } from './arvore-ui.js';
+import { criarSelecao } from './selecao.js';
+import { adicionarItinerarios } from './mapa-itinerarios.js';
 import { criarBusca } from './busca-ui.js';
 
 console.info(`MapLibre GL JS ${maplibregl.getVersion()}`);
@@ -44,5 +46,8 @@ for (const { id, texto, persistente } of mensagensDeFalhas(dados.falhas)) {
 // Sem GeoJSON a árvore fica vazia, com a mensagem já exibida (DEC-F25).
 if (dados.geojson) {
   const modelo = anexarCores(construirModelo(dados.geojson));
-  criarBusca(caixaLateral, modelo, criarArvore(caixaLateral, modelo));
+  const selecao = criarSelecao();
+  const aplicarSelecao = adicionarItinerarios(mapa, dados.geojson);
+  selecao.aoMudar(aplicarSelecao);
+  criarBusca(caixaLateral, modelo, criarArvore(caixaLateral, modelo, selecao));
 }
