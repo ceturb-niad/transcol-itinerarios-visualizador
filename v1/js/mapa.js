@@ -26,6 +26,16 @@ export function montarEstilo(bases, baseInicial) {
   return { version: 8, sources, layers };
 }
 
+// Mostra só a camada da base escolhida; não troca o estilo, então as camadas
+// de itinerário (acima das bases) permanecem. Devolve false se o id for desconhecido.
+export function alternarBase(mapa, bases, id) {
+  if (!(id in bases)) return false;
+  for (const outro of Object.keys(bases)) {
+    mapa.setLayoutProperty(`base-${outro}`, 'visibility', outro === id ? 'visible' : 'none');
+  }
+  return true;
+}
+
 export function criarMapa(container) {
   return new maplibregl.Map({
     container,

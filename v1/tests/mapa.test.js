@@ -32,3 +32,21 @@ test('estilo: só rasters, sem texto e sem itinerário; só a base inicial visí
   assert.equal(visiveis.length, 1);
   assert.equal(visiveis[0].id, `base-${BASE_INICIAL}`);
 });
+
+import { alternarBase } from '../js/mapa.js';
+
+test('bases: pelo menos OSM e satélite, com zoom máximo coerente', () => {
+  assert.ok('osm' in BASES && 'satelite' in BASES);
+  assert.equal(BASES.satelite.chave, null);
+  assert.ok(BASES.satelite.zoomMaximo >= VISTA_INICIAL.zoom);
+});
+
+test('alternarBase deixa só uma camada visível e não toca em fontes', () => {
+  const chamadas = [];
+  const mapa = { setLayoutProperty: (...a) => chamadas.push(a) };
+  assert.equal(alternarBase(mapa, BASES, 'satelite'), true);
+  assert.equal(chamadas.length, Object.keys(BASES).length);
+  const visiveis = chamadas.filter(([, prop, v]) => prop === 'visibility' && v === 'visible');
+  assert.deepEqual(visiveis.map((c) => c[0]), ['base-satelite']);
+  assert.equal(alternarBase(mapa, BASES, 'inexistente'), false);
+});
