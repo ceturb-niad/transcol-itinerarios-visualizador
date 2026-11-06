@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "test": "node --test",
-    "start": "python3 -m http.server 8000"
+    "start": "python3 -m http.server 8000",
+    "verificar-dados": "node v1/tests/contrato-dados.mjs"
   }
 }
