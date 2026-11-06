@@ -74,6 +74,35 @@ html, body {
   display: none;
 }
 
+.busca-campo {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  background: #fff;
+  font: inherit;
+}
+
+.busca-campo:focus-visible {
+  outline: 2px solid #1a5fb4;
+  outline-offset: -2px;
+}
+
+.busca-vazio {
+  margin: 0;
+  padding: 10px;
+  color: #555;
+}
+
+.arvore-no[hidden],
+.busca-vazio[hidden] {
+  display: none;
+}
+
 .arvore-lista {
   list-style: none;
   margin: 0;
