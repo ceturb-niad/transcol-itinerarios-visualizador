@@ -19,3 +19,38 @@ html, body {
 #controles > * {
   pointer-events: auto;
 }
+
+/* Seletor de base: canto superior direito (o esquerdo fica para a caixa lateral). */
+.controle-base {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  font: 13px/1.2 system-ui, sans-serif;
+}
+
+.controle-base button {
+  border: 0;
+  padding: 7px 12px;
+  background: #fff;
+  color: #222;
+  cursor: pointer;
+}
+
+.controle-base button + button {
+  border-left: 1px solid #ccc;
+}
+
+.controle-base button[aria-pressed="true"] {
+  background: #1a5fb4;
+  color: #fff;
+}
+
+.controle-base button:focus-visible {
+  outline: 2px solid #1a5fb4;
+  outline-offset: -2px;
+}

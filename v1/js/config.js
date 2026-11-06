@@ -19,6 +19,20 @@ export const BASES = {
     // null = usa o padrão do MapLibre (22) até haver valor verificado na fonte oficial.
     zoomMaximo: null,
   },
+  // [Provisório] (DEC-F10). Fonte: página do serviço World_Imagery
+  // (https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer),
+  // lida em 06/11/2026: tiles 256 px JPEG, Web Mercator; atribuição = "Copyright Text" do serviço.
+  // A ordem {z}/{y}/{x} e o zoom máximo foram medidos com tiles de Vitória em 06/11/2026.
+  // Termos de uso sem chave e parecer de licença: sem fonte lida; seguem em aberto.
+  satelite: {
+    nome: 'Satélite (Esri)',
+    tiles: ['https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+    tileSize: 256,
+    atribuicao: 'Source: Esri, Vantor, Earthstar Geographics, and the GIS User Community',
+    // O serviço declara até o nível 23, mas em Vitória os níveis 20 a 23 devolvem o tile "sem dados".
+    zoomMaximo: 19,
+    chave: null, // opção 2 (ArcGIS Location Platform), se a opção 1 for abandonada (DEC-F10)
+  },
 };
 
 export const BASE_INICIAL = 'osm';
