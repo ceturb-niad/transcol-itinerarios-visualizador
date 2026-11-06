@@ -54,3 +54,58 @@ html, body {
   outline: 2px solid #1a5fb4;
   outline-offset: -2px;
 }
+
+/* Avisos de falha: embaixo, centralizados, sem tapar o seletor de base nem a caixa lateral. */
+.avisos {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(560px, calc(100vw - 40px));
+  font: 13px/1.4 system-ui, sans-serif;
+}
+
+.aviso {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 10px 8px 12px;
+  background: #fff3cd;
+  color: #3d2e00;
+  border-left: 4px solid #c28a00;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.aviso span {
+  flex: 1;
+}
+
+.aviso button {
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Lugar das datas (preenchido pela #16); o aviso de indisponibilidade é persistente. */
+.datas {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+  font: 13px/1.2 system-ui, sans-serif;
+}
+
+.aviso-datas {
+  padding: 6px 10px;
+  background: #fff3cd;
+  color: #3d2e00;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
