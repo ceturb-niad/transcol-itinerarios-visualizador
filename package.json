@@ -1,0 +1,7 @@
+{
+  "name": "transcol-itinerarios-visualizador",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  }
+}
