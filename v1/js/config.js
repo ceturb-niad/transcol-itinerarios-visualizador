@@ -43,3 +43,14 @@ export const DADOS = {
   manifesto: 'manifest.json',
   geojson: 'itinerarios.geojson',
 };
+
+// Cores das features (DEC-F18, DEC-F21). Paleta na ordem da especificação.
+export const CORES = {
+  paleta: ['#E6194B', '#0072F0', '#FFB000', '#00B050', '#9B30FF', '#00C8D7', '#FF6F00', '#D81B9A', '#8BC34A', '#6A5ACD'],
+  anguloAureo: 137.508,
+  // [Provisório] (DEC-F21): saturação e luminosidade das cores acima da paleta.
+  hslExcedente: { saturacao: 65, luminosidade: 42 },
+};
+
+// Caixa lateral (DEC-F11). [Provisório]: a largura também alimenta o padding do enquadramento.
+export const CAIXA_LATERAL = { largura: 320, folga: 10 };

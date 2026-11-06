@@ -55,6 +55,89 @@ html, body {
   outline-offset: -2px;
 }
 
+/* Caixa lateral (DEC-F11): sobreposta ao mapa, com rolagem própria, sem cobri-lo todo. */
+.caixa-lateral {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  bottom: 10px;
+  width: min(320px, 40vw);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  font: 13px/1.3 system-ui, sans-serif;
+  color: #222;
+}
+
+.caixa-lateral:empty {
+  display: none;
+}
+
+.arvore-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.arvore-lista .arvore-lista {
+  padding-left: 14px;
+}
+
+.arvore-botao {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 10px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.arvore-botao:hover {
+  background: #eef3fa;
+}
+
+.arvore-botao:focus-visible {
+  outline: 2px solid #1a5fb4;
+  outline-offset: -2px;
+}
+
+.arvore-grupo > .arvore-botao {
+  font-weight: 600;
+}
+
+.arvore-seta {
+  width: 0;
+  height: 0;
+  border-left: 5px solid #555;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.arvore-botao[aria-expanded="true"] > .arvore-seta {
+  transform: rotate(90deg);
+}
+
+.arvore-feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px 3px 24px;
+}
+
+.arvore-amostra {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+}
+
 /* Avisos de falha: embaixo, centralizados, sem tapar o seletor de base nem a caixa lateral. */
 .avisos {
   position: absolute;
