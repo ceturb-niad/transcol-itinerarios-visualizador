@@ -52,5 +52,12 @@ export const CORES = {
   hslExcedente: { saturacao: 65, luminosidade: 42 },
 };
 
+// Desenho dos itinerários ligados (DEC-F21). [Provisório]: contorno escuro semitransparente
+// sob a linha colorida, para ler sobre as duas bases.
+export const ITINERARIOS = {
+  contorno: { largura: 5, cor: '#000000', opacidade: 0.45 },
+  linha: { largura: 3 },
+};
+
 // Caixa lateral (DEC-F11). [Provisório]: a largura também alimenta o padding do enquadramento.
 export const CAIXA_LATERAL = { largura: 320, folga: 10 };

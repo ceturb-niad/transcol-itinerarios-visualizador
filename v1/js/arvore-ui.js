@@ -4,7 +4,7 @@
 
 // Nó do DOM por objeto do modelo (par, grupo, subgrupo): referências, sem texto concatenado.
 function novoRegistro() {
-  return { grupos: new Map(), subgrupos: new Map(), pares: new Map() };
+  return { grupos: new Map(), subgrupos: new Map(), pares: new Map(), caixasLinha: new Map(), caixasFeature: new Map() };
 }
 
 function listaDe(...itens) {
@@ -36,10 +36,23 @@ function criarNo(nivel, rotulo, dados, filhos) {
   return li;
 }
 
-function criarFeature(feature) {
+// Caixa de seleção; identidade só em data-, nunca em `id` (DEC-F22).
+function criarCaixa(rotulo, dados) {
+  const caixa = document.createElement('input');
+  caixa.type = 'checkbox';
+  caixa.className = 'arvore-caixa';
+  caixa.setAttribute('aria-label', rotulo);
+  Object.assign(caixa.dataset, dados);
+  return caixa;
+}
+
+function criarFeature(feature, registro) {
   const li = document.createElement('li');
   li.className = 'arvore-feature';
   li.dataset.chave = feature.properties.chave;
+  const caixa = criarCaixa(`Ligar ${feature.properties.nome}`, { chave: feature.properties.chave });
+  registro.caixasFeature.set(feature.properties.chave, caixa);
+  li.append(caixa);
   const amostra = document.createElement('span');
   amostra.className = 'arvore-amostra';
   amostra.style.background = feature.properties._cor ?? 'transparent';
@@ -52,7 +65,10 @@ function criarFeature(feature) {
 function criarLinha(par, registro) {
   const dados = { grupo: par.grupo, linha: par.linha };
   if (par.subgrupo !== null) dados.subgrupo = par.subgrupo;
-  const no = criarNo('linha', par.linha, dados, par.features.map(criarFeature));
+  const no = criarNo('linha', par.linha, dados, par.features.map((f) => criarFeature(f, registro)));
+  const caixa = criarCaixa(`Ligar todas as features da linha ${par.linha}`, dados);
+  no.prepend(caixa);
+  registro.caixasLinha.set(caixa, par);
   registro.pares.set(par, no);
   return no;
 }
@@ -65,7 +81,7 @@ function definirExpandido(no, aberto) {
 }
 
 // Devolve { raiz, aplicarFiltro }. A árvore já fica inserida em `contenedor`.
-export function criarArvore(contenedor, modelo) {
+export function criarArvore(contenedor, modelo, selecao) {
   const registro = novoRegistro();
   const raiz = listaDe(...modelo.grupos.map((g) => {
     const filhos = [
@@ -93,6 +109,24 @@ export function criarArvore(contenedor, modelo) {
     botao.setAttribute('aria-expanded', String(!aberto));
     botao.nextElementSibling.hidden = aberto;
   });
+
+  // Caixas de feature e de linha (grupo e subgrupo não têm caixa; DEC-F29).
+  raiz.addEventListener('change', (evento) => {
+    const caixa = evento.target;
+    if (!caixa.classList.contains('arvore-caixa')) return;
+    if (registro.caixasLinha.has(caixa)) selecao.alternarLinha(registro.caixasLinha.get(caixa));
+    else selecao.alternarFeature(caixa.dataset.chave);
+  });
+
+  function sincronizarCaixas() {
+    for (const [chave, caixa] of registro.caixasFeature) caixa.checked = selecao.estaLigada(chave);
+    for (const [caixa, par] of registro.caixasLinha) {
+      const estado = selecao.estadoLinha(par);
+      caixa.checked = estado === 'todas';
+      caixa.indeterminate = estado === 'algumas';
+    }
+  }
+  selecao.aoMudar(sincronizarCaixas);
 
   // Estado manual de expansão guardado ao entrar no modo busca e devolvido ao sair (DEC-F23).
   // Expansões feitas durante a busca valem só até apagar o texto.
