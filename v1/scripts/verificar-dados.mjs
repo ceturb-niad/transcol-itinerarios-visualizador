@@ -1,5 +1,5 @@
 // Confere os dados publicados contra o contrato v1. Sob demanda: npm run verificar-dados
-// (não termina em .test.js, então `npm test` não o executa nem depende da rede).
+// (script de verificação, não teste automatizado: depende da rede e fica fora do `npm test`).
 import { carregarItinerarios } from '../js/dados.js';
 
 const CAMPOS = ['caminho', 'grupo', 'subgrupo', 'pasta_linha', 'linha', 'nome', 'codigo', 'sentido', 'variante', 'obs', 'chave'];
