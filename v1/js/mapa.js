@@ -46,3 +46,11 @@ export function criarMapa(container) {
     attributionControl: { compact: false },
   });
 }
+
+// Erro de tile de uma base → id da base, ou null se o erro não for de uma base.
+// O MapLibre 6.16.0 dispara `error` com `sourceId` quando o carregamento de um tile falha
+// (exceto HTTP 404, que não gera evento).
+export function baseDoErro(evento, bases) {
+  const id = evento?.sourceId?.startsWith('base-') ? evento.sourceId.slice('base-'.length) : null;
+  return id !== null && id in bases ? id : null;
+}
