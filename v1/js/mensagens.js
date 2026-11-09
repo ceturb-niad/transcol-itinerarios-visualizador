@@ -6,6 +6,8 @@ export const TEXTOS = {
     'Não foi possível obter as datas de atualização dos dados. Os itinerários foram carregados, mas não é possível confirmar quão recentes são.',
   ligarTudo: 'Ligar tudo',
   limparSelecao: 'Limpar seleção',
+  rotuloLinha: 'Linha',
+  rotuloGrupo: 'Grupo',
   semResultadoBusca: 'Nenhuma linha encontrada',
   datasIndisponiveis: 'Datas de atualização indisponíveis',
   falhaGeojson:

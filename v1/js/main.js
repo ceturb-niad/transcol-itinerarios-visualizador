@@ -13,6 +13,7 @@ import { criarSelecao } from './selecao.js';
 import { adicionarItinerarios } from './mapa-itinerarios.js';
 import { criarAcoes } from './acoes-ui.js';
 import { criarBusca } from './busca-ui.js';
+import { criarPopup } from './popup-ui.js';
 
 console.info(`MapLibre GL JS ${maplibregl.getVersion()}`);
 
@@ -50,6 +51,7 @@ if (dados.geojson) {
   const selecao = criarSelecao();
   const aplicarSelecao = adicionarItinerarios(mapa, dados.geojson);
   selecao.aoMudar(aplicarSelecao);
+  criarPopup(mapa, dados.geojson, selecao);
   // Modo de medição (4.3 T2): só com ?medir na URL; não afeta o uso normal.
   if (new URLSearchParams(location.search).has('medir')) {
     const { prepararMedicao } = await import('./medicao.js');

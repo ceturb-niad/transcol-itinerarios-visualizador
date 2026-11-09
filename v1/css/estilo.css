@@ -273,3 +273,17 @@ html, body {
   border-radius: 4px;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
+
+/* Popup de clique (DEC-F09, DEC-F28). Rolagem para muitas features; limite de itens sem decisão. */
+.popup-itens {
+  max-height: 240px;
+  overflow-y: auto;
+  font: 13px/1.3 system-ui, sans-serif;
+  color: #222;
+}
+
+.popup-item + .popup-item {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid #ddd;
+}
