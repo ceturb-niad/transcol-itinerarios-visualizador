@@ -1,6 +1,6 @@
 // Ponto de entrada da V1. MapLibre é módulo ES copiado em vendor/ (DEC-F02).
 import * as maplibregl from '../vendor/maplibre-gl/maplibre-gl.mjs';
-import { BASES } from './config.js';
+import { BASES, CAIXA_LATERAL, ENQUADRAMENTO } from './config.js';
 import { criarMapa, baseDoErro } from './mapa.js';
 import { criarControleBase } from './controle-base.js';
 import { carregarItinerarios } from './dados.js';
@@ -14,6 +14,7 @@ import { adicionarItinerarios } from './mapa-itinerarios.js';
 import { criarAcoes } from './acoes-ui.js';
 import { criarBusca } from './busca-ui.js';
 import { criarPopup } from './popup-ui.js';
+import { limitesDe, paddingDe } from './enquadramento.js';
 
 console.info(`MapLibre GL JS ${maplibregl.getVersion()}`);
 
@@ -52,6 +53,18 @@ if (dados.geojson) {
   const aplicarSelecao = adicionarItinerarios(mapa, dados.geojson);
   selecao.aoMudar(aplicarSelecao);
   criarPopup(mapa, dados.geojson, selecao);
+  // Enquadra só ao ligar (DEC-F24); desligar e limpar não passam por aqui.
+  selecao.aoLigar((chaves) => {
+    const limites = limitesDe(chaves.map((c) => modelo.features.get(c)));
+    if (!limites) return;
+    const padding = paddingDe(
+      caixaLateral.getBoundingClientRect().width,
+      window.innerWidth,
+      ENQUADRAMENTO,
+      CAIXA_LATERAL.folga,
+    );
+    mapa.fitBounds(limites, { padding, maxZoom: ENQUADRAMENTO.zoomMaximo });
+  });
   // Modo de medição (4.3 T2): só com ?medir na URL; não afeta o uso normal.
   if (new URLSearchParams(location.search).has('medir')) {
     const { prepararMedicao } = await import('./medicao.js');

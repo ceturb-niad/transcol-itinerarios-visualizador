@@ -65,3 +65,12 @@ export const CAIXA_LATERAL = { largura: 320, folga: 10 };
 // Clique no mapa: tolerância, em pixels, ao redor do ponto clicado (linhas de 3 px são difíceis de acertar).
 // [Provisório]: ajustar olhando o mapa.
 export const CLIQUE = { tolerancia: 4 };
+
+// Enquadramento ao ligar (DEC-F24). [Provisório]: ajustar olhando o mapa. A folga esquerda vem da
+// caixa lateral medida (CAIXA_LATERAL.folga + largura medida + folga); estas são as dos outros lados.
+// `larguraMinima`: largura que deve sobrar ao traçado, para o padding nunca consumir o mapa todo.
+export const ENQUADRAMENTO = {
+  zoomMaximo: 16,
+  folga: { topo: 60, direita: 40, baixo: 40, esquerda: 10 },
+  larguraMinima: 200,
+};

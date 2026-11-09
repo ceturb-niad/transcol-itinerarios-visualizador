@@ -1,5 +1,5 @@
 // Ações globais no topo da caixa lateral (DEC-F23): Ligar tudo e Limpar seleção.
-// Independem da busca e não movem o mapa; o enquadramento de Ligar tudo é da 5.2.
+// Independem da busca; Ligar tudo enquadra (via selecao.aoLigar) e Limpar não move o mapa.
 import { TEXTOS } from './mensagens.js';
 
 function botao(texto, aoClicar) {
@@ -16,7 +16,7 @@ export function criarAcoes(contenedor, modelo, selecao, campoBusca) {
   acoes.className = 'acoes';
   // Todas as features carregadas, inclusive as ocultas pelo filtro da busca.
   acoes.append(
-    botao(TEXTOS.ligarTudo, () => selecao.ligar(modelo.features.keys())),
+    botao(TEXTOS.ligarTudo, () => selecao.ligarTudo(modelo.features.keys())),
     botao(TEXTOS.limparSelecao, () => selecao.limpar()),
   );
   const cabecalho = document.createElement('div');
