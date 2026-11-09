@@ -61,3 +61,7 @@ export const ITINERARIOS = {
 
 // Caixa lateral (DEC-F11). [Provisório]: a largura também alimenta o padding do enquadramento.
 export const CAIXA_LATERAL = { largura: 320, folga: 10 };
+
+// Clique no mapa: tolerância, em pixels, ao redor do ponto clicado (linhas de 3 px são difíceis de acertar).
+// [Provisório]: ajustar olhando o mapa.
+export const CLIQUE = { tolerancia: 4 };
