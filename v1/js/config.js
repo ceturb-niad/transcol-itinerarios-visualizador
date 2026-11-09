@@ -74,3 +74,6 @@ export const ENQUADRAMENTO = {
   folga: { topo: 60, direita: 40, baixo: 40, esquerda: 10 },
   larguraMinima: 200,
 };
+
+// Datas na tela (DEC-F26): fuso explícito, nunca a zona da máquina; idade recalculada a cada 60 s.
+export const DATAS = { fuso: 'America/Sao_Paulo', intervaloRecalculoMs: 60000 };
