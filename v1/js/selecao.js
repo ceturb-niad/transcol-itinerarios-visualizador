@@ -6,6 +6,9 @@ export const ESTADOS = Object.freeze({ nenhuma: 'nenhuma', algumas: 'algumas', t
 export function criarSelecao() {
   const ligadas = new Set();
   const ouvintes = [];
+  const ouvintesLigar = [];
+  // Pedido de ligar (para enquadrar, 5.2): leva as chaves pedidas, inclusive as já ligadas.
+  const avisarLigar = (chaves) => ouvintesLigar.forEach((fn) => fn(chaves));
   const avisar = () => ouvintes.forEach((fn) => fn(ligadas));
   const chavesDe = (par) => par.features.map((f) => f.properties.chave);
 
@@ -43,8 +46,12 @@ export function criarSelecao() {
     ligar,
     desligar,
     alternarFeature(chave) {
-      if (ligadas.has(chave)) desligar([chave]);
-      else ligar([chave]);
+      if (ligadas.has(chave)) {
+        desligar([chave]);
+        return;
+      }
+      ligar([chave]);
+      avisarLigar([chave]);
     },
     // Desligada ou intermediária liga todas; toda ligada desliga todas (C6).
     // Devolve true se ligou (quem enquadra, na 5.2, só reage a ligar).
@@ -53,8 +60,16 @@ export function criarSelecao() {
         desligar(chavesDe(par));
         return false;
       }
-      ligar(chavesDe(par));
+      const chaves = chavesDe(par);
+      ligar(chaves);
+      avisarLigar(chaves);
       return true;
+    },
+    // Ligar tudo: liga e pede enquadramento de todas, mesmo se já estavam ligadas.
+    ligarTudo(chaves) {
+      const lista = [...chaves];
+      ligar(lista);
+      avisarLigar(lista);
     },
     limpar() {
       if (!ligadas.size) return;
@@ -63,6 +78,9 @@ export function criarSelecao() {
     },
     aoMudar(fn) {
       ouvintes.push(fn);
+    },
+    aoLigar(fn) {
+      ouvintesLigar.push(fn);
     },
   };
 }

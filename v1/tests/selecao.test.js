@@ -85,3 +85,33 @@ test('ligar tudo e limpar (C7)', () => {
   assert.equal(s.estadoLinha(vv), 'nenhuma');
   assert.equal(chamadas, 2);
 });
+
+test('aoLigar: feature, linha, religar linha parcial e ligar tudo avisam; desligar e limpar não (C10)', () => {
+  const s = criarSelecao();
+  const pedidos = [];
+  s.aoLigar((chaves) => pedidos.push([...chaves]));
+  const par = modelo.par('Volta Direto', '649');
+  const chavesPar = par.features.map((x) => x.properties.chave);
+
+  s.alternarFeature(chavesPar[0]);
+  assert.deepEqual(pedidos.at(-1), [chavesPar[0]]);
+
+  // Linha parcial: religar enquadra a linha toda, inclusive a feature já ligada.
+  assert.equal(s.alternarLinha(par), true);
+  assert.deepEqual(pedidos.at(-1), chavesPar);
+
+  const antes = pedidos.length;
+  s.alternarFeature(chavesPar[0]); // desliga
+  assert.equal(s.alternarLinha(par), true); // parcial -> liga de novo
+  assert.equal(pedidos.length, antes + 1);
+  assert.equal(s.alternarLinha(par), false); // todas -> desliga
+  s.limpar();
+  assert.equal(pedidos.length, antes + 1);
+
+  s.ligarTudo(modelo.features.keys());
+  assert.equal(pedidos.at(-1).length, modelo.features.size);
+  s.ligarTudo(modelo.features.keys()); // já tudo ligado: ainda enquadra
+  assert.equal(pedidos.length, antes + 3);
+  s.desligar(['Volta Direto/649/649V']);
+  assert.equal(pedidos.length, antes + 3);
+});
