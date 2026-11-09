@@ -263,7 +263,18 @@ html, body {
   left: 50%;
   top: 10px;
   transform: translateX(-50%);
+  max-width: calc(100vw - 20px);
   font: 13px/1.2 system-ui, sans-serif;
+}
+
+/* Datas de atualização (DEC-F14): duas linhas, cabem na folga de topo do enquadramento. */
+.datas:not(:empty):has(.datas-linha) {
+  padding: 6px 10px;
+  background: #fff;
+  color: #222;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .aviso-datas {

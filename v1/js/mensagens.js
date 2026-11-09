@@ -8,6 +8,9 @@ export const TEXTOS = {
   limparSelecao: 'Limpar seleção',
   rotuloLinha: 'Linha',
   rotuloGrupo: 'Grupo',
+  rotuloAtualizados: 'Dados atualizados em',
+  rotuloVerificado: 'Verificado em',
+  dataIndisponivel: 'indisponível',
   semResultadoBusca: 'Nenhuma linha encontrada',
   datasIndisponiveis: 'Datas de atualização indisponíveis',
   falhaGeojson:
@@ -31,3 +34,11 @@ export function mensagensDeFalhas(falhas) {
   }
   return avisos;
 }
+
+// Idade relativa (DEC-F26). `n` já vem arredondado para baixo.
+export const IDADE = {
+  menosDeUmMinuto: 'há menos de 1 min',
+  minutos: (n) => `há ${n} min`,
+  horas: (n) => `há ${n} h`,
+  dias: (n) => `há ${n} dias`,
+};

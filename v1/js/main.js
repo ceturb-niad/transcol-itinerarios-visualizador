@@ -14,6 +14,7 @@ import { adicionarItinerarios } from './mapa-itinerarios.js';
 import { criarAcoes } from './acoes-ui.js';
 import { criarBusca } from './busca-ui.js';
 import { criarPopup } from './popup-ui.js';
+import { criarDatas } from './datas-ui.js';
 import { limitesDe, paddingDe } from './enquadramento.js';
 
 console.info(`MapLibre GL JS ${maplibregl.getVersion()}`);
@@ -45,6 +46,9 @@ const dados = await carregarItinerarios();
 for (const { id, texto, persistente } of mensagensDeFalhas(dados.falhas)) {
   mostrarAviso(id, texto, { persistente });
 }
+
+// Datas só com manifesto íntegro; sem ele o aviso persistente já ocupa o lugar (DEC-F25).
+if (dados.manifesto) criarDatas(document.getElementById('datas'), dados.manifesto);
 
 // Sem GeoJSON a árvore fica vazia, com a mensagem já exibida (DEC-F25).
 if (dados.geojson) {
